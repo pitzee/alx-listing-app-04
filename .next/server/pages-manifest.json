@@ -1,0 +1,13 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/api/bookings": "pages/api/bookings.js",
+  "/api/hello": "pages/api/hello.js",
+  "/api/properties/[id]": "pages/api/properties/[id].js",
+  "/api/properties/[id]/reviews": "pages/api/properties/[id]/reviews.js",
+  "/api/properties": "pages/api/properties.js",
+  "/booking": "pages/booking.html",
+  "/": "pages/index.html",
+  "/404": "pages/404.html"
+}
