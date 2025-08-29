@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import type { PropertyProps } from "@/interfaces";
 
 interface PropertyCardProps {
@@ -7,8 +8,17 @@ interface PropertyCardProps {
 }
 
 export default function PropertyCard({ property }: PropertyCardProps) {
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    router.push(`/property/${property.id}`);
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <div
+      className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+      onClick={handleCardClick}
+    >
       <div className="relative w-full h-48">
         <Image
           src={property.image}
