@@ -19,7 +19,6 @@ const Header: React.FC = () => {
       {/* Logo */}
       <div className="flex items-center mb-2 md:mb-0">
         <span className="text-2xl font-bold text-blue-600 mr-2">ALXStay</span>
-        <img src="/favicon.ico" alt="Logo" className="w-8 h-8" />
       </div>
       {/* Search Bar */}
       <div className="flex-1 flex justify-center mb-2 md:mb-0">
