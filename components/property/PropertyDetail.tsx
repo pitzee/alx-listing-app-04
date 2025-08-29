@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import axios from "axios";
-import type { PropertyProps, ReviewsResponse } from "@/interfaces";
+import type { PropertyProps } from "@/interfaces";
+import ReviewSection from "./ReviewSection";
 
 interface PropertyDetailProps {
   property: PropertyProps;
@@ -10,29 +10,6 @@ interface PropertyDetailProps {
 
 export default function PropertyDetail({ property }: PropertyDetailProps) {
   const router = useRouter();
-  const [reviews, setReviews] = useState<ReviewsResponse | null>(null);
-  const [loadingReviews, setLoadingReviews] = useState(true);
-  const [showAllReviews, setShowAllReviews] = useState(false);
-
-  useEffect(() => {
-    const fetchReviews = async () => {
-      if (!property.id) return;
-
-      try {
-        setLoadingReviews(true);
-        const response = await axios.get(
-          `/api/properties/${property.id}/reviews`
-        );
-        setReviews(response.data);
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
-      } finally {
-        setLoadingReviews(false);
-      }
-    };
-
-    fetchReviews();
-  }, [property.id]);
 
   const handleBookNow = () => {
     router.push(
@@ -41,10 +18,6 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
       )}`
     );
   };
-
-  const displayedReviews = showAllReviews
-    ? reviews?.reviews || []
-    : (reviews?.reviews || []).slice(0, 3);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -195,73 +168,7 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
             </div>
 
             {/* Reviews Section */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Reviews</h2>
-                {reviews && (
-                  <div className="flex items-center">
-                    <span className="text-yellow-500 mr-1">★</span>
-                    <span className="font-medium text-gray-700">
-                      {reviews.averageRating}
-                    </span>
-                    <span className="text-gray-500 ml-1">
-                      ({reviews.totalReviews} reviews)
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {loadingReviews ? (
-                <div className="flex justify-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                </div>
-              ) : reviews && reviews.reviews.length > 0 ? (
-                <div>
-                  <div className="space-y-6">
-                    {displayedReviews.map((review) => (
-                      <div
-                        key={review.id}
-                        className="border-b border-gray-200 pb-6 last:border-b-0"
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className="font-semibold text-gray-900">
-                            {review.guestName}
-                          </h3>
-                          <div className="flex items-center">
-                            <span className="text-yellow-500 mr-1">★</span>
-                            <span className="text-gray-700">
-                              {review.rating}
-                            </span>
-                          </div>
-                        </div>
-                        <p className="text-gray-600 mb-2">{review.comment}</p>
-                        <div className="flex items-center justify-between text-sm text-gray-500">
-                          <span>
-                            {new Date(review.date).toLocaleDateString()}
-                          </span>
-                          <span>
-                            {review.helpful} people found this helpful
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {reviews.reviews.length > 3 && (
-                    <button
-                      onClick={() => setShowAllReviews(!showAllReviews)}
-                      className="mt-6 text-blue-600 hover:text-blue-800 font-medium"
-                    >
-                      {showAllReviews
-                        ? "Show less"
-                        : `Show all ${reviews.totalReviews} reviews`}
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <p className="text-gray-500 text-center py-8">No reviews yet</p>
-              )}
-            </div>
+            <ReviewSection propertyId={property.id || 0} />
           </div>
 
           {/* Booking Sidebar */}

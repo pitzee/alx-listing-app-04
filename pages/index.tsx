@@ -57,9 +57,8 @@ export default function Home() {
         <Image
           src={HERO_BG_IMAGE}
           alt="Hero Background"
-          layout="fill"
-          objectFit="cover"
-          className="z-0"
+          fill
+          className="z-0 object-cover"
           priority
         />
         <div className="absolute inset-0 bg-black bg-opacity-40 z-10 flex flex-col items-center justify-center">
